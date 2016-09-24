@@ -5,10 +5,10 @@
 #include <iostream>
 #include <vector>
 
+std::vector<int> coordinates;
 void processReceiveData(const sputnik_message::Coordinate& msg)
 {
   std::istringstream stream(msg.data);
-  std::vector<int> coordinates;
   int coordinate;
   while (stream >> coordinate) {
 	coordinates.push_back(coordinate);
@@ -18,6 +18,7 @@ void processReceiveData(const sputnik_message::Coordinate& msg)
   } else {
 	std::cout << "sputnik_2: receive bad data" << std::endl;
   }
+  coordinates.clear();
 }
 
 int main(int argc, char **argv)

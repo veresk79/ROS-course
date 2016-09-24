@@ -11,9 +11,10 @@ int main(int argc, char **argv)
   ros::Publisher sp1_publisher = n.advertise<sputnik_message::Coordinate>("sputnik_msg", 5);
   ros::Rate loop_rate(10);
 
+  sputnik_message::Coordinate msg;
+  std::stringstream ss;
   while (ros::ok()) {
-    sputnik_message::Coordinate msg;
-    std::stringstream ss;
+    ss.str("");
     ss << (rand()%90) << " " << (rand()%90);
     msg.data = ss.str();
     ROS_INFO("sputnik_1 send message %s", msg.data.c_str());
