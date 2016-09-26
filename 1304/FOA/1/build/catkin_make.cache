@@ -1,0 +1,2 @@
+lab1
+-DCATKIN_DEVEL_PREFIX=/home/tonycool/ros/workspace_lab1/devel -DCMAKE_INSTALL_PREFIX=/home/tonycool/ros/workspace_lab1/install -G Unix Makefiles
