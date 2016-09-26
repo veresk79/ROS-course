@@ -5,7 +5,7 @@
 #include <time.h>
 #include <math.h>
 
-ros::Publisher send_point;
+ros::Publisher send;
 void getCurrentPoint(const turtlesim::Pose::ConstPtr& pose_message);
 
 int main(int argc, char **argv)
