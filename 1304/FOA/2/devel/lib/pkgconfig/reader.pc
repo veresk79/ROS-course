@@ -1,0 +1,8 @@
+prefix=/home/tonycool/ros/2/devel
+
+Name: reader
+Description: Description of reader
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/tonycool/ros/2/devel/lib 
+Requires: 

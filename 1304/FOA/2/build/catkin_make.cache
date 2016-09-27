@@ -1,0 +1,2 @@
+message:reader:writer
+-DCATKIN_DEVEL_PREFIX=/home/tonycool/ros/2/devel -DCMAKE_INSTALL_PREFIX=/home/tonycool/ros/2/install -G Unix Makefiles
