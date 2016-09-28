@@ -1,8 +1,0 @@
-prefix=/home/tonycool/ros/2/install
-
-Name: message
-Description: Description of message
-Version: 0.0.0
-Cflags: -I/home/tonycool/ros/2/install/include
-Libs: -L/home/tonycool/ros/2/install/lib 
-Requires: 

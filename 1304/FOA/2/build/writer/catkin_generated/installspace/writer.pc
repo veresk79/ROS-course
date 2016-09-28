@@ -1,8 +1,0 @@
-prefix=/home/tonycool/ros/2/install
-
-Name: writer
-Description: Description of writer
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/tonycool/ros/2/install/lib 
-Requires: 
