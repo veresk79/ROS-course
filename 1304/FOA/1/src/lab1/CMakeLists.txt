@@ -10,10 +10,8 @@ catkin_package()
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(lab1 src/lab1_subscriber.cpp)
 add_executable(lab1.2 src/lab1_publisher.cpp)
 
-target_link_libraries(lab1 ${catkin_LIBRARIES})
 target_link_libraries(lab1.2 ${catkin_LIBRARIES})
 
 find_package(catkin REQUIRED COMPONENTS roscpp)
