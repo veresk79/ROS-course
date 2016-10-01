@@ -55,6 +55,7 @@ int main(int argc, char ** argv)
 	marker.color.a = 1.0;
 
 	marker.lifetime = ros::Duration();
+	marker_pub.publish(marker);
 
 	float d = 0.1;
 	fl = false;
@@ -63,14 +64,10 @@ int main(int argc, char ** argv)
 	while (ros::ok())
 	{
 
-		marker_pub.publish(marker);
-
 		if (fl)
 		{
-			ros::Rate loop_rate(10);
 			try
 			{
-				listener.waitForTransform("/world", "/C3Po/pose", ros::Time::now(), ros::Duration(1));
 				listener.lookupTransform("/world", "/C3Po/pose", ros::Time(0), tr);
 			}
 			catch (tf::TransformException &ex)
@@ -80,16 +77,24 @@ int main(int argc, char ** argv)
 				continue;
 			}
 
-			marker.pose.position.x = tr.getOrigin().x();
-			marker.pose.position.y = tr.getOrigin().y();
+			float factor = 100;
+
+			float dx = fabs(marker.pose.position.x - tr.getOrigin().x()) / factor;
+			dx *= marker.pose.position.x < tr.getOrigin().x() ? 1 : -1;
+			float dy = fabs(marker.pose.position.y - tr.getOrigin().y()) / factor;
+			dy *= marker.pose.position.y < tr.getOrigin().y() ? 1 : -1;
+
+			if(dx < 0.0005 && dy < 0.0005) return 0;
+
+			marker.pose.position.x += dx;
+			marker.pose.position.y += dy;
 
 			marker_pub.publish(marker);
-			loop_rate.sleep();
 		}
 		else
 		{
 			i++;
-			if (i < 10)
+			if (i < 10 || true)
 			{
 				int new_x = rand() % 10;
 				int new_y = rand() % 10;
@@ -103,7 +108,7 @@ int main(int argc, char ** argv)
 				float dy = fabs(marker.pose.position.y - new_y) / factor;
 				dy *= marker.pose.position.y < new_y ? 1 : -1;
 
-				for (float step = 0; step < factor; step++)
+				for (float step = 0; step < factor && !fl; step++)
 				{
 					marker.pose.position.x += dx;
 					marker.pose.position.y += dy;
@@ -114,8 +119,9 @@ int main(int argc, char ** argv)
 					tf::Quaternion q;
 					q.setRPY(0, 0, 0);
 					transform.setRotation(q);
-					br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "R2D2/pose"));
+					br.sendTransform(tf::StampedTransform(transform, ros::Time(0), "world", "R2D2/pose"));
 
+					ros::spinOnce();
 					loop_rate.sleep();
 
 				}
