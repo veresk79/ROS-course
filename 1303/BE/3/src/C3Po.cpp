@@ -21,9 +21,6 @@ int main(int argc, char ** argv)
 	tf::TransformListener listener;
 	tf::StampedTransform tr;
 
-	while (pub.getNumSubscribers() == 0)
-		sleep(1);
-
 	visualization_msgs::Marker marker;
 	marker.header.frame_id = "/my_frame";
 	marker.header.stamp = ros::Time::now();
@@ -34,8 +31,8 @@ int main(int argc, char ** argv)
 	marker.type = visualization_msgs::Marker::SPHERE;
 	marker.action = visualization_msgs::Marker::ADD;
 
-	marker.pose.position.x = 7;
-	marker.pose.position.y = 7;
+	marker.pose.position.x = 17;
+	marker.pose.position.y = 17;
 	marker.pose.position.z = 0;
 
 	marker.pose.orientation.x = 0.0;
@@ -53,6 +50,7 @@ int main(int argc, char ** argv)
 	marker.color.a = 1.0;
 
 	marker.lifetime = ros::Duration();
+	marker_pub.publish(marker);
 
 	float d = 0.1;
 	float start_x = marker.pose.position.x;
@@ -62,13 +60,18 @@ int main(int argc, char ** argv)
 	while (ros::ok())
 	{
 
-		marker_pub.publish(marker);
+		// Waiting until R2D2 is lost.
+		if (pub.getNumSubscribers() == 0)
+		{
+			sleep(1);
+			marker_pub.publish(marker);
+			continue;
+		}
 
 		if (!fl)
 		{
 			try
 			{
-				listener.waitForTransform("/world", "/R2D2/pose", ros::Time::now(), ros::Duration(1));
 				listener.lookupTransform("/world", "/R2D2/pose", ros::Time(0), tr);
 			}
 			catch (tf::TransformException &ex)
@@ -84,6 +87,7 @@ int main(int argc, char ** argv)
 				fl = true;
 
 				pub.publish(msg);
+				continue;
 			}
 
 			float factor = 100;
@@ -93,16 +97,12 @@ int main(int argc, char ** argv)
 			float dy = fabs(marker.pose.position.y - tr.getOrigin().y()) / factor;
 			dy *= marker.pose.position.y < tr.getOrigin().y() ? 1 : -1;
 
-			for (float step = 0; step < factor; step++)
-			{
-				marker.pose.position.x += dx;
-				marker.pose.position.y += dy;
+			marker.pose.position.x += dx;
+			marker.pose.position.y += dy;
 
-				marker_pub.publish(marker);
+			marker_pub.publish(marker);
 
-				loop_rate.sleep();
-
-			}
+			loop_rate.sleep();
 
 		}
 		else
@@ -136,8 +136,6 @@ int main(int argc, char ** argv)
 		}
 
 		ros::spinOnce();
-
-		loop_rate.sleep();
 	}
 
 	return 0;
