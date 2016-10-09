@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(searcher)
+project(search)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -8,7 +8,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   tf
-  turtlesim
 )
 
 set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
@@ -104,8 +103,8 @@ set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES searcher
-#  CATKIN_DEPENDS roscpp rospy tf turtlesim
+#  LIBRARIES search
+#  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
 
@@ -115,40 +114,35 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
 include_directories(
-  ${catkin_INCLUDE_DIRS}
+	${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(searcher
-#   src/${PROJECT_NAME}/searcher.cpp
+# add_library(search
+#   src/${PROJECT_NAME}/search.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(searcher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(search ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(turtle_broadcaster src/turtle_broadcaster.cpp)
-add_executable(turtle_listener src/turtle_listener.cpp)
-add_executable(turtle_walker src/turtle_walker.cpp)
+add_executable(walker_node src/walker.cpp)
+add_executable(searcher_node src/searcher.cpp)
+
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(searcher_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(search_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(turtle_broadcaster
+target_link_libraries(walker_node
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(turtle_listener
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(turtle_walker
+target_link_libraries(searcher_node
   ${catkin_LIBRARIES}
 )
 
@@ -167,7 +161,7 @@ target_link_libraries(turtle_walker
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS searcher searcher_node
+# install(TARGETS search search_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -192,7 +186,7 @@ target_link_libraries(turtle_walker
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_searcher.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_search.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
