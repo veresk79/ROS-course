@@ -1,10 +1,18 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(lover_subscr)
+project(lab3)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs lover_msg message_generation)
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  tf
+  turtlesim
+  std_msgs
+  robot_msg
+  message_generation
+)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -77,13 +85,17 @@ find_package(catkin REQUIRED COMPONENTS roscpp std_msgs lover_msg message_genera
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES lover_subscr
-#  CATKIN_DEPENDS other_catkin_pkg
+#  LIBRARIES lab3
+#  CATKIN_DEPENDS roscpp rospy tf turtlesim
+CATKIN_DEPENDS roscpp std_msgs  message_runtime
 #  DEPENDS system_lib
 )
-include_directories(include ${catkin_INCLUDE_DIRS})
-add_executable(lover_subcr src/loverSubscr.cpp)
-target_link_libraries(lover_subcr ${catkin_LIBRARIES})
+add_executable(missing_robot src/missing_robot.cpp)
+target_link_libraries(missing_robot ${catkin_LIBRARIES})
+add_executable(searcher_robot src/searcher_robot.cpp)
+target_link_libraries(searcher_robot ${catkin_LIBRARIES})
+add_executable(turtle_broadcast src/turtle_broadcast.cpp)
+target_link_libraries(turtle_broadcast ${catkin_LIBRARIES})
 ###########
 ## Build ##
 ###########
@@ -91,21 +103,24 @@ target_link_libraries(lover_subcr ${catkin_LIBRARIES})
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+)
 
 ## Declare a cpp library
-# add_library(lover_subscr
-#   src/${PROJECT_NAME}/lover_subscr.cpp
+# add_library(lab3
+#   src/${PROJECT_NAME}/lab3.cpp
 # )
 
 ## Declare a cpp executable
-# add_executable(lover_subscr_node src/lover_subscr_node.cpp)
+# add_executable(lab3_node src/lab3_node.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(lover_subscr_node lover_subscr_generate_messages_cpp)
+# add_dependencies(lab3_node lab3_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(lover_subscr_node
+# target_link_libraries(lab3_node
 #   ${catkin_LIBRARIES}
 # )
 
@@ -124,7 +139,7 @@ target_link_libraries(lover_subcr ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS lover_subscr lover_subscr_node
+# install(TARGETS lab3 lab3_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -149,7 +164,7 @@ target_link_libraries(lover_subcr ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_lover_subscr.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_lab3.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
